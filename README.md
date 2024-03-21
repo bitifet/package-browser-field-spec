@@ -1,4 +1,4 @@
-The ```browser``` field is provided by a module author as a hint to javascript bundlers or component tools when packaging modules for client side use. The field is found in a ```package.json``` file (described [here](https://docs.npmjs.com/files/package.json#browser)) usually located at the root of a project source tree.
+The ```browser``` field is provided by its author when a module is meant to be used client-side and serves as a hint to javascript bundlers or component tools when packaging modules for client side use. The field is found in a ```package.json``` file (described [here](https://docs.npmjs.com/files/package.json#browser)) usually located at the root of a project source tree.
 
 ## terms
 
@@ -32,7 +32,7 @@ The ```browser``` field is where the module author can hint to the bundler which
 
 ### alternate main - basic
 
-When you specify a single string for the ```browser``` field, it will replace ```main``` and be the module entry point. The ```main``` field specifies the entry point to the module so by replacing it, you replace the entry point when the module is packaged by a bundler for browser use.
+When you specify a single string for the ```browser``` field, it will replace ```main``` and be the module entry point. The ```main``` field specifies the entry point to the module so by replacing it, you replace the entry point when the module is packaged by a bundler for browser use. It is also [encouraged to be used instead of ```main```](https://docs.npmjs.com/cli/v10/configuring-npm/package-json#browser) when the module is meant to be used only at client side.
 
 ```javascript
 "browser": "./browser/specific/main.js"
@@ -59,6 +59,8 @@ Now when you package your code, uses of ```module-a``` will be replaced with cod
 
 If a module you depend on already includes a ```browser``` field, then you don't have to do anything special. Whenever you require that module, the bundler SHOULD use the hint provided by the module.
 
+If the module is not meant to be used server-side, you can still omit the ```main``` field by specifying the entry point in a "main" key of the object.
+
 ### ignore a module
 You can simply prevent a module or file from being loaded into a bundle by specifying a value of ```false``` for any of the keys. This is useful if you know certain codepaths will not be executed client side but find it awkward to split up or change the code structure.
 
@@ -82,6 +84,6 @@ Using the ```browser``` field in package.json allows a module author to clearly 
 
 ## Notes
 
-* If your module is pure javascript and can run in both client and server environments, then you do not need a browser field.
+* If your module is pure javascript and can run in both client and server environments, then the browser field still helps to emphasize that it is also suitable for client side.
 * The ```browser``` field is located in the ```package.json``` file as it provides metadata in the form of a hint to bundlers about what files you have indicated are targeted for the client. It allows your source code to remain clean and free of hacks.
 * Consider that the client environment as the special case as it exposes objects into the global space to provide certain features and limits others.
